@@ -13,3 +13,4 @@ http://blog.chinaunix.net/uid-25272011-id-3491488.html
 
 aac enc:
 ./aac_enc founders.wav out.aac
+fdk_aac aac编码时，已经自动添加ADTS.这7个字节在编码前面
