@@ -99,6 +99,8 @@ int main(int argc, char *argv[]) {
 		fprintf(stderr, "Bad wav file %s\n", infile);
 		return 1;
 	}
+	printf("format:%d, channels:%d sample_rate:%d bits_per_sample:%d\n",
+			format, channels, sample_rate, bits_per_sample);
 	if (format != 1) {
 		fprintf(stderr, "Unsupported WAV format %d\n", format);
 		return 1;
@@ -107,6 +109,7 @@ int main(int argc, char *argv[]) {
 		fprintf(stderr, "Unsupported WAV sample depth %d\n", bits_per_sample);
 		return 1;
 	}
+	printf("channels:%d\n", channels);
 	switch (channels) {
 	case 1: mode = MODE_1;       break;
 	case 2: mode = MODE_2;       break;
@@ -178,11 +181,12 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	printf("frameLength:%d\n", info.frameLength);
 
 	input_size = channels*2*info.frameLength;
 	input_buf = (uint8_t*) malloc(input_size);
 	convert_buf = (int16_t*) malloc(input_size);
+
+	printf("frameLength:%d, input_size:%d\n", info.frameLength, input_size);
 
 	while (1) {
 		AACENC_BufDesc in_buf = { 0 }, out_buf = { 0 };
@@ -198,6 +202,7 @@ int main(int argc, char *argv[]) {
 		AACENC_ERROR err;
 
 		read = wav_read_data(wav, input_buf, input_size);
+		printf("wav read data:%d\n", read);
 		for (i = 0; i < read/2; i++) {
 			const uint8_t* in = &input_buf[2*i];
 			convert_buf[i] = in[0] | (in[1] << 8);

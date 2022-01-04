@@ -18,6 +18,12 @@ if(ENABLE_ASAN)
 	SET(CMAKE_EXE_LINKER_FLAGS "-fsanitize=address -lasan")
 endif()
 
+#add_library(fdk_aac SHARED $ {SRC})     
+add_library(fdk_aac_enc STATIC fdk_aac_enc.c)     
+
 # 指定生成目标
 add_executable(aac_enc aac-enc.c wavreader.c)
 target_link_libraries (aac_enc fdk-aac ${CMAKE_EXE_LINKER_FLAGS}) 
+
+add_executable(test_aac_enc test_aac_enc.c wavreader.c)
+target_link_libraries (test_aac_enc  fdk_aac_enc fdk-aac ${CMAKE_EXE_LINKER_FLAGS}) 
